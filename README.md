@@ -1,41 +1,63 @@
-# Structural Change & Regime Modeling
+# Change-Point Detection and Regime-Switching for Time-Series Risk Monitoring
 
-**From structural breaks to change points and recurring latent regimes.**
+A practical literature review connecting structural breaks, sequential detection, recurring latent states and quantitative risk.
 
-一份连接计量经济学、统计学与机器学习的中文选择性综述。核心问题是：**什么时候应该寻找新的分段，什么时候应该识别曾经出现过的状态？**
+**Read the [full English review](review.md).** It follows 15 sections, from terminology and mathematical formulations to financial failure modes and method selection.
 
-状态：文献综述初稿；已整理核心来源与实验方案，尚未实施实验。检索日期：2026-09-16。不是穷尽式或系统性综述，也不主张首次统一这些领域。
+**Status:** literature review and experiment design completed; benchmark implementation and empirical results are not included. Literature search cutoff: 2026-09-16. Editorial checks: 2026-09-18. The search is bounded and documented, not an exhaustive database review.
 
-## 内容
+## What this repository explains
 
-- [中文综述](survey.zh-CN.md)：概念、统一表示、方法比较、局限与研究问题。
-- [参考文献](references.bib)：10 篇核心来源的 BibTeX。
-- [实验设计](benchmark-plan.md)：用于后续复现的协议，不含未经运行的结果。
+- Why a change point, structural break, regime shift and latent regime are different objects.
+- BOCPD run-length inference, hazard and observation priors, conjugate updates and alarm conventions.
+- PELT, dynamic programming and binary segmentation: objectives, computational conditions and penalties.
+- CUSUM, Page–Hinkley, HMMs, Markov switching, HSMMs, threshold and smooth-transition models.
+- Kernel, robust Bayesian and representation-learning approaches.
+- Why stale marks, empty books and binding price limits can make observed volatility fall while economic risk remains high.
 
-## 从这五篇综述读起
+## Reading map
 
-| 文献 | 适合回答的问题 | 本项目中的位置 |
-|---|---|---|
-| Casini & Perron (2018), [Structural Breaks in Time Series](https://arxiv.org/abs/1805.03807) | 回归关系是否改变？如何估计断点并做推断？ | 计量经济学主线；引用的是 2018 年预印本版本 |
-| Truong, Oudre & Vayatis (2020), [Selective review of offline change point detection methods](https://doi.org/10.1016/j.sigpro.2019.107299) | 怎样选择离线分段算法？ | 用代价函数、搜索方法、断点数量约束组织方法 |
-| Hamilton (2016), [Macroeconomic Regimes and Regime Shifts](https://www.nber.org/papers/w21863) | 如何对潜在经济状态与转换建模？ | 状态切换与经济解释；此处引用 NBER 版本 |
-| Xie et al. (2021), [Sequential (Quickest) Change Detection: Classical Results and New Directions](https://arxiv.org/abs/2104.04186) | 如何兼顾检测延迟和误报？ | 在线检测主线 |
-| Gama et al. (2014), [A survey on concept drift adaptation](https://doi.org/10.1145/2523813) | 数据关系改变后，预测模型如何适应？ | 连接检测与模型更新 |
+| File | Purpose |
+|---|---|
+| [Review](review.md) | Main exposition, comparison table, risk applications and interview takeaways |
+| [Annotated references](references.md) | 34 research/technical sources and 4 official sources; contributions and supporting sections |
+| [BibTeX](references.bib) / [source records](sources.json) | Reusable citations and structured metadata |
+| [Search protocol](search-protocol.md) | Queries, selection decisions and evidence limitations |
+| [Experiment protocol](experiment-protocol.md) | Shared synthetic benchmark; VIX experiment; futures extension |
+| [Repository plan](repository-plan.md) | Future Python layout, README sections and eight figure specifications |
+| [Verification script](verify_review.py) | Selected algebra and local document checks; not a benchmark |
+| [Earlier Chinese overview](survey.zh-CN.md) | Shorter background draft; the English review is the expanded version |
 
-建议顺序：Truong → Casini & Perron → Hamilton → Xie → Gama。先建立分类，再按研究问题阅读原始方法论文。
+## Three distinctions to keep in view
 
-## 本项目的观点
+**Segmentation versus state reuse.** Low–high–low behavior can have two boundaries, three chronological segments and only two recurring states.
 
-结构突变、变点检测与状态切换有重叠，但目标不同。分段模型通常给每一段单独估计参数；状态模型则可以让相隔很远的时间段共享同一组参数。比较时必须区分**断点定位、状态恢复、实时报警和样本外预测**，不能用单一分数宣称一种方法全面优胜。
+**Historical reconstruction versus live decisions.** An offline partition or smoothed state path uses information a live system did not have. Parameter fitting and feature construction must also respect the clock.
 
-## 范围与来源
+**Measured variability versus economic exposure.** Repeated stale prices can produce zero observed returns without making liquidation safer. Data-quality and execution conditions belong in the monitoring design.
 
-本版本聚焦时间序列中的突变、重复状态和预测适应。生态临界转变、因果机制识别、高维网络与深度序列模型仅作为后续扩展，不在本次覆盖范围内。
+## Suggested reading route
 
-检索使用 structural breaks review、offline change point detection review、regime switching survey、quickest change detection、concept drift adaptation 等词，并从综述追溯代表性方法。优先引用作者预印本、出版商页面和机构版本。当前核验以题录、摘要及可访问的方法说明为主；不是逐篇全文精读记录。经典方法与综述分开标注。
+Start with Truong et al. (2020) for offline taxonomy, Casini–Perron (2018) for structural inference, Adams–MacKay (2007) for BOCPD, Killick et al. (2012) for PELT, Xie et al. (2021) for sequential objectives, and Rabiner (1989)/Hamilton (1989) for latent states. Then read Ang–Timmermann (2012) for finance and Xu et al. (2025) for deep-learning coverage. Links and publication details are in the [bibliography](references.md).
 
-另检索到 Tan & Wu (2025), *On Regime Switching Models*（[出版商入口](https://www.mdpi.com/2227-7390/13/7/1128)）；本次出版商页面未能读取，暂列待核验扩展阅读，不作为正文论证依据。本版本不沿用“已覆盖 2025–2026 最新综述”的说法。
+## Proposed experiments
 
-## 维护方式
+The design compares BOCPD, PELT, CUSUM and HMM on identical synthetic observations, while separating retrospective boundaries, causal alarms and prediction. Scenarios include mean/variance shifts, recurrence, novel states, outliers, dependence changes and frozen observations.
 
-每篇新增论文记录：研究问题、假设、目标量、在线/离线信息集、推断与复杂度条件、评价协议、局限、原文链接。将实证结果与待检验想法分开记录；仅分享自写笔记和论文链接。
+A second design uses official daily VIX history with chronological training/validation/test periods. A contract-level futures extension requires appropriate intraday data and market-status fields. No performance ranking or trading-profit claim is made.
+
+## Local verification
+
+Run the following from this directory with Python 3; it uses only the standard library:
+
+~~~bash
+python3 verify_review.py
+~~~
+
+The script checks reference consistency, local links, the 15-section structure, conjugate-update identities, the constant-hazard reset property, and a small dynamic-programming/brute-force agreement check. It does not validate all methods, remote link availability or empirical risk effectiveness.
+
+## Scope and contributions
+
+This is an educational research synthesis. Mathematical guarantees remain conditional on their original assumptions. Proposed tuning grids and operating rules are clearly marked as design choices. For new literature, record the primary source, exact version, assumptions, information set, computational conditions and practical failure modes.
+
+Keep benchmark results separate from proposals; record data provenance, causal fitting windows and uncertainty before adding results. Third-party papers and datasets retain their own rights.

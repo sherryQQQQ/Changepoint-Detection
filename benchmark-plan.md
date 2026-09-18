@@ -1,5 +1,7 @@
 # 最小实验协议（尚未执行）
 
+> Superseded by the expanded [English experiment protocol](experiment-protocol.md). Retained as the earlier Chinese sketch.
+
 目标：检验“断点定位”与“重复状态建模”的取舍；不寻找适用于所有场景的总冠军。
 
 ## 数据生成
